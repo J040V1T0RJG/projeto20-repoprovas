@@ -57,9 +57,35 @@ describe("Test POST /sign-in", () => {
         expect(result.status).toBe(401);
     });
 });
-/*
-describe("Testa POST /sign-up", () => {
-    it("")
+
+describe("Test POST /sign-up", () => {
+    it("Should return statusCode 201, if user registered successfully", async () => {
+        const user = userFactory();
+
+        const result = await supertest(app).post("/sign-up").send(user);
+
+        expect(result.status).toBe(201);
+    });
+
+    it("Should return statusCode 422, if user request is not processed due to semantic errors", async () => {
+        const user = {
+            email: "invalidEmail",
+            password: "random password",
+            passwordConfirm: "random password"
+        };
+
+        const result = await supertest(app).post("/sign-up").send(user);
+
+        expect(result.status).toBe(422);
+    });
+
+    it("Should return statusCode 409, if user email already exists", async () => {
+        const user = userFactory();
+
+        await supertest(app).post("/sign-up").send(user);
+        const result = await supertest(app).post("/sign-up").send(user);
+
+        expect(result.status).toBe(409);
+    });
 });
 
-*/
