@@ -6,7 +6,7 @@ const signIn = async (req: Request, res: Response) => {
 
     const token = await userService.login(body);
 
-    return res.status(200).send(token)
+    return res.status(200).send({token})
 };
 
 const signUp = async (req: Request, res: Response) => {
