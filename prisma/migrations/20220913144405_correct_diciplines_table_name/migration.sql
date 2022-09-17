@@ -1,0 +1,19 @@
+/*
+  Warnings:
+
+  - You are about to drop the `Dicipline` table. If the table is not empty, all the data it contains will be lost.
+
+*/
+-- DropTable
+DROP TABLE "Dicipline";
+
+-- CreateTable
+CREATE TABLE "diciplines" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "diciplines_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "diciplines_name_key" ON "diciplines"("name");
