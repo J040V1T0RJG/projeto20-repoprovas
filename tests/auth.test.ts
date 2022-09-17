@@ -1,9 +1,8 @@
-import { object } from "joi";
 import supertest from "supertest";
 import app from "../src/app";
 import { prisma } from "../src/config/database";
 import { userFactory } from "./factories/userFactory";
-/*
+
 beforeEach(async() => {
     await prisma.$executeRaw`TRUNCATE TABLE users`;
 });
@@ -11,7 +10,6 @@ beforeEach(async() => {
 afterAll(async () => {
     await prisma.$disconnect();
 });
-*/
 
 describe("Test POST /sign-in", () => {
     it("Should return statusCode 200 and token, if user is successfully logged in", async () => {

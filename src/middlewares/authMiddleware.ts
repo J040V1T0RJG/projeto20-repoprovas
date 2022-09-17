@@ -1,24 +1,32 @@
 import { Request, Response, NextFunction } from "express";
-import * as authSchemas from "../schemas/authSchemas";
-import { validateSchema } from "../utils/validateSchemas";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
-const validateSignIn = (req: Request, res: Response, next: NextFunction) => {
-    const body = req.body;
+import * as userRepository from "../repositories/userRepository";
+import { unauthorizedError } from "../utils/errorUtils";
 
-    validateSchema(authSchemas.signInSchema, body);
+dotenv.config();
 
-    next();
-};
+const ensureAuthenticatedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    const { authorization } = req.headers;
+    if (!authorization) throw unauthorizedError("Missing authorization header");
 
-const validateSignUp = (req: Request, res: Response, next: NextFunction) => {
-    const body = req.body;
+    const token = authorization.replace("Bearer ", "");
+    if (!token) throw unauthorizedError("Missing token");
 
-    validateSchema(authSchemas.signUpSchema, body);
+    try {
+        const SECRET = <string>process.env.TOKEN_SECRET_KEY;
+        const { userId } = jwt.verify(token, SECRET) as { userId: number };
+        const user = await userRepository.findUserById(userId);
 
-    next();
+        res.locals.user = user;
+
+        next();
+    } catch {
+        throw unauthorizedError("Invalid token")
+    };
 };
 
 export {
-    validateSignIn,
-    validateSignUp
+    ensureAuthenticatedMiddleware
 };

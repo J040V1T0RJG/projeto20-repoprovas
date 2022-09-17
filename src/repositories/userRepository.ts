@@ -9,13 +9,22 @@ const findUserByEmail = async (email: string) => {
     });
 };
 
-const insertUser = (user: UserData) => {
-    return prisma.user.create({
+const findUserById = async (id: number) => {
+    return await prisma.user.findUnique({
+        where: {
+            id
+        }
+    });
+};
+
+const insertUser = async (user: UserData) => {
+    return await prisma.user.create({
         data: user
     });
 };
 
 export {
     findUserByEmail,
+    findUserById,
     insertUser
 };
