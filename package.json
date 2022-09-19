@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && npx prisma migrate deploy",
-    "start": "node dist/serve.js",
+    "start": "node dist/src/serve.js",
     "dev": "nodemon src/serve.ts",
     "test": "jest --no-cache"
   },
