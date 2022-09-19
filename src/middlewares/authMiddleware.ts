@@ -15,15 +15,19 @@ const ensureAuthenticatedMiddleware = async (req: Request, res: Response, next: 
     const token = authorization.replace("Bearer ", "");
     if (!token) throw unauthorizedError("Missing token");
 
-    const SECRET = <string>process.env.TOKEN_SECRET_KEY;
-    const { userId } = jwt.verify(token, SECRET) as { userId: number };
-    const user = await userRepository.findUserById(userId);
+    try {
+        const SECRET = <string>process.env.TOKEN_SECRET_KEY;
+        const { userId } = jwt.verify(token, SECRET) as { userId: number };
+        const user = await userRepository.findUserById(userId);
 
-    if (!user) throw unauthorizedError("Invalid token");
+        if (!user) throw unauthorizedError("Invalid token");   
+        
+        res.locals.user = user;
 
-    res.locals.user = user;
-
-    next();
+        next();
+    } catch (error) {
+        throw unauthorizedError("Invalid token")
+    };
 };
 
 export {

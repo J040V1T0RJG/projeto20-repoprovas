@@ -67,4 +67,28 @@ describe("Test POST /test", () => {
 
         expect(result.status).toBe(404);
     });
+
+    it("Should return statusCode 401, if token is invalid", async () => {
+        const numberOfCategories: number = await prisma.category.count();
+        const numberOfTeachersDisciplines: number = await prisma.teachersDiscipline.count();
+
+        const test = testFactory(numberOfCategories, numberOfTeachersDisciplines);
+
+        const token: string = "InvalidToken93erfg739rbf3b.niduwicrefuje.ajciweucun"
+
+        const result = await supertest(app).post("/test").auth(token, { type: "bearer" }).send(test);
+        
+        expect(result.status).toBe(401);
+    });
+
+    it("Should return statusCode 401, if token is not sent", async () => {
+        const numberOfCategories: number = await prisma.category.count();
+        const numberOfTeachersDisciplines: number = await prisma.teachersDiscipline.count();
+
+        const test = testFactory(numberOfCategories, numberOfTeachersDisciplines);
+
+        const result = await supertest(app).post("/test").send(test);
+        
+        expect(result.status).toBe(401);
+    });
 });
