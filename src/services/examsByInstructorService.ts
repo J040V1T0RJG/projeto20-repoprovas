@@ -11,6 +11,15 @@ const getExamsByInstructor = async () => {
         };
     }
 */
+    const arrumar = [];
+/*
+    for (let i = 0; i < exams.length; i++) {
+        for (let j = 0; j < exams[i].TeachersDiscipline.length; j++) {
+
+        }
+    }*/
+
+
     return exams;
 };
 

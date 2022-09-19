@@ -1,7 +1,7 @@
 import { prisma } from "../config/database";
 
 const getExamsByInstructor = async () => {
-    
+  /*  
     return await prisma.teacher.findMany({
         distinct: ["name"],
         select: {
@@ -21,7 +21,11 @@ const getExamsByInstructor = async () => {
                 }
             }
         }
-    });
+    });*/
+
+
+
+
 /*
     return await prisma.test.findMany({
        distinct: ["teachersDisciplineId"],
