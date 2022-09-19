@@ -14,8 +14,11 @@ afterAll(async () => {
 */
 describe("Test POST /test", () => {
     it("Should return statusCode 201, if proof created successfully", async () => {
+        const numberOfCategories: number = await prisma.category.count();
+        const numberOfTeachersDisciplines: number = await prisma.teachersDiscipline.count();
+
         const user = userFactory();
-        const test = testFactory();
+        const test = testFactory(numberOfCategories, numberOfTeachersDisciplines);
 
         await supertest(app).post("/sign-up").send(user);
         const userData = await supertest(app).post("/sign-in").send({email: user.email, password: user.password});
@@ -40,16 +43,17 @@ describe("Test POST /test", () => {
 
         const token: string = userData.body.token;
 
-        console.log("it should return 422 token: ", token);
-
         const result = await supertest(app).post("/test").auth(token, { type: "bearer" }).send(test);
 
         expect(result.status).toBe(422);
     });
 
     it("Should return statusCode 404, if categoryId or teachersDisciplineId does not exist in database", async () => {
+        const numberOfCategories: number = await prisma.category.count();
+        const numberOfTeachersDisciplines: number = await prisma.teachersDiscipline.count();
+        
         const user = userFactory();
-        const test = testFactory();
+        const test = testFactory(numberOfCategories, numberOfTeachersDisciplines);
 
         test.categoryId = 9999999;
         test.teachersDisciplineId = 999999999999;
@@ -58,8 +62,6 @@ describe("Test POST /test", () => {
         const userData = await supertest(app).post("/sign-in").send({email: user.email, password: user.password});
 
         const token: string = userData.body.token;
-
-        console.log("it should return 404 token: ", token);
 
         const result = await supertest(app).post("/test").auth(token, { type: "bearer" }).send(test);
 

@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 
-const testFactory = () => {
+const testFactory = (numberOfCategories: number, numberOfTeachersDisciplines: number) => {
     return {
         name: faker.lorem.word(),
         pdfUrl: faker.internet.url(),
-        categoryId: 1,
-        teachersDisciplineId: 1
+        categoryId: Math.floor(Math.random() * numberOfCategories) + 1,
+        teachersDisciplineId: Math.floor(Math.random() * numberOfTeachersDisciplines) + 1
     };
 };
 
