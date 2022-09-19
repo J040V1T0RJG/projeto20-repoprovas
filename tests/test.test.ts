@@ -3,15 +3,7 @@ import app from "../src/app";
 import { prisma } from "../src/config/database";
 import { testFactory } from "./factories/testFactory";
 import { userFactory } from "./factories/userFactory";
-/*
-beforeEach(async() => {
-    await prisma.$executeRaw`TRUNCATE TABLE tests`;
-});
 
-afterAll(async () => {
-    await prisma.$disconnect();
-});
-*/
 describe("Test POST /test", () => {
     it("Should return statusCode 201, if proof created successfully", async () => {
         const numberOfCategories: number = await prisma.category.count();
